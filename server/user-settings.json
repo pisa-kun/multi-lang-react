@@ -1,0 +1,8 @@
+{
+  "user": {
+    "id": "sample-user",
+    "name": "Sample User",
+    "email": "sample.user@example.com",
+    "preferredLocale": "ja"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "login": {
+    "title": "ログイン",
+    "description": "このサンプルアプリでは、どんな入力でもログインできます。",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "button": "ログイン"
+  },
+  "home": {
+    "title": "ホーム",
+    "unauthenticatedTitle": "ログインが必要です",
+    "unauthenticatedDescription": "ログイン前は言語を切り替えると画面の表示が変わります。",
+    "welcome": "ようこそ。現在の言語は {{locale}} です。",
+    "loadingSettings": "設定を読み込み中です…",
+    "logout": "ログアウト"
+  },
+  "profile": {
+    "title": "ユーザープロファイル",
+    "notLoggedIn": "ログインしていません",
+    "loginRequired": "プロフィールを見るにはログインしてください。",
+    "userId": "ユーザーID: {{userId}}",
+    "locale": "選択中の言語: {{locale}}"
+  },
+  "locale": {
+    "ja": "日本語",
+    "us": "English"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+dist
+.git
+.gitignore
+Terraform
+terraform
+cdk/node_modules
+npm-debug.log

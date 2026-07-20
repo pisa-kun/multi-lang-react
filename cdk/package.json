@@ -1,0 +1,10 @@
+{
+  "name": "multi-lang-sample-cdk",
+  "private": true,
+  "devDependencies": {
+    "aws-cdk-lib": "^2.81.0",
+    "constructs": "^10.1.207",
+    "typescript": "^5.5.4",
+    "ts-node": "^10.9.1"
+  }
+}
