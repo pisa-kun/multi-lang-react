@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   isAuthenticated: boolean;
   preferredLocale: string;
   loadingSettings: boolean;
-  onLogout: () => void;
 };
 
-const HomePage = ({ isAuthenticated, preferredLocale, loadingSettings, onLogout }: Props) => {
+const HomePage = ({ isAuthenticated, preferredLocale, loadingSettings }: Props) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   if (!isAuthenticated) {
     return (
@@ -24,7 +25,9 @@ const HomePage = ({ isAuthenticated, preferredLocale, loadingSettings, onLogout 
       <h1>{t('home.title')}</h1>
       <p>{t('home.welcome', { locale: preferredLocale })}</p>
       {loadingSettings && <div>{t('home.loadingSettings')}</div>}
-      <button onClick={onLogout}>{t('home.logout')}</button>
+      <button type="button" onClick={() => navigate('/profile')}>
+        {t('home.viewProfile')}
+      </button>
     </section>
   );
 };
