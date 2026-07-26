@@ -45,14 +45,20 @@ function App() {
   }, [auth.preferredLocale, currentLocale, i18n]);
 
   useEffect(() => {
-    if (location.search) {
-      const params = new URLSearchParams(location.search);
-      const currentLang = params.get('lang');
-      if (!currentLang && currentLocale !== DEFAULT_LOCALE) {
-        params.set('lang', currentLocale);
-        const nextSearch = params.toString();
-        navigate(`${location.pathname}${nextSearch ? `?${nextSearch}` : ''}`, { replace: true });
+    const params = new URLSearchParams(location.search);
+    const currentLang = params.get('lang');
+
+    if (currentLang) {
+      const nextLocale = normalizeLocale(currentLang);
+      if (nextLocale !== currentLocale) {
+        writeStoredLocale(nextLocale);
       }
+    }
+
+    if (!currentLang && currentLocale !== DEFAULT_LOCALE) {
+      params.set('lang', currentLocale);
+      const nextSearch = params.toString();
+      navigate(`${location.pathname}${nextSearch ? `?${nextSearch}` : ''}`, { replace: true });
     }
   }, [currentLocale, location.pathname, location.search, navigate]);
 
