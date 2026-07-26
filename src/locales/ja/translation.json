@@ -19,7 +19,8 @@
     "notLoggedIn": "ログインしていません",
     "loginRequired": "プロフィールを見るにはログインしてください。",
     "userId": "ユーザーID: {{userId}}",
-    "locale": "選択中の言語: {{locale}}"
+    "locale": "選択中の言語: {{locale}}",
+    "backToHome": "ホームに戻る"
   },
   "locale": {
     "ja": "日本語",

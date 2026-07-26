@@ -19,7 +19,8 @@
     "notLoggedIn": "Not signed in",
     "loginRequired": "Please sign in to view profile.",
     "userId": "User ID: {{userId}}",
-    "locale": "Selected locale: {{locale}}"
+    "locale": "Selected locale: {{locale}}",
+    "backToHome": "Back to home"
   },
   "locale": {
     "ja": "日本語",
