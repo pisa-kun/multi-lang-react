@@ -36,7 +36,7 @@ function App() {
   const navigate = useNavigate();
 
   const currentLocale = normalizeLocale(
-    getLocaleFromPath(location.pathname) ?? getLocaleFromQuery(location.search) ?? readStoredLocale()
+    getLocaleFromQuery(location.search) ?? getLocaleFromPath(location.pathname) ?? readStoredLocale()
   );
 
   useEffect(() => {
