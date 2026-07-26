@@ -16,6 +16,9 @@ const HomePage = ({ isAuthenticated, preferredLocale, loadingSettings }: Props) 
       <section className="page page-home">
         <h1>{t('home.unauthenticatedTitle')}</h1>
         <p>{t('home.unauthenticatedDescription')}</p>
+        <button type="button" onClick={() => navigate('/login')}>
+          {t('home.goToLogin')}
+        </button>
       </section>
     );
   }

@@ -12,7 +12,8 @@
     "unauthenticatedDescription": "ログイン前は言語を切り替えると画面の表示が変わります。",
     "welcome": "ようこそ。現在の言語は {{locale}} です。",
     "loadingSettings": "設定を読み込み中です…",
-    "viewProfile": "ユーザー情報を見る"
+    "viewProfile": "ユーザー情報を見る",
+    "goToLogin": "ログイン画面へ"
   },
   "profile": {
     "title": "ユーザープロファイル",
@@ -20,7 +21,8 @@
     "loginRequired": "プロフィールを見るにはログインしてください。",
     "userId": "ユーザーID: {{userId}}",
     "locale": "選択中の言語: {{locale}}",
-    "backToHome": "ホームに戻る"
+    "backToHome": "ホームに戻る",
+    "goToLogin": "ログイン画面へ"
   },
   "locale": {
     "ja": "日本語",

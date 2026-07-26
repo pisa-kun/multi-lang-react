@@ -12,7 +12,8 @@
     "unauthenticatedDescription": "Before login, the language toggles the interface text.",
     "welcome": "Welcome. Current locale is {{locale}}.",
     "loadingSettings": "Loading settings…",
-    "viewProfile": "View user information"
+    "viewProfile": "View user information",
+    "goToLogin": "Go to login"
   },
   "profile": {
     "title": "User profile",
@@ -20,7 +21,8 @@
     "loginRequired": "Please sign in to view profile.",
     "userId": "User ID: {{userId}}",
     "locale": "Selected locale: {{locale}}",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "goToLogin": "Go to login"
   },
   "locale": {
     "ja": "日本語",

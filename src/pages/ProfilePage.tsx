@@ -16,6 +16,9 @@ const ProfilePage = ({ isAuthenticated, userId, preferredLocale }: Props) => {
       <section className="page page-profile">
         <h1>{t('profile.notLoggedIn')}</h1>
         <p>{t('profile.loginRequired')}</p>
+        <button type="button" onClick={() => navigate('/login')}>
+          {t('profile.goToLogin')}
+        </button>
       </section>
     );
   }
