@@ -29,6 +29,7 @@ const LoginPage = ({ onLogin }: Props) => {
           <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </label>
         <button type="submit">{t('login.button')}</button>
+        <button type="button" onClick={onLogin}>{t('login.next')}</button>
       </form>
     </section>
   );
