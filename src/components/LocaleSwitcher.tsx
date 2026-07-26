@@ -7,16 +7,15 @@ type Props = {
 };
 
 const LocaleSwitcher = ({ locale, onChange, disabled }: Props) => {
-  const { t, i18n } = useTranslation();
-  const isJapanese = i18n.language?.startsWith('ja');
+  const { t } = useTranslation();
 
   return (
     <div className="locale-switcher">
       <button type="button" onClick={() => onChange('ja')} disabled={disabled || locale === 'ja'}>
-        {isJapanese ? t('locale.ja') : 'Japanese'}
+        {t('locale.ja')}
       </button>
       <button type="button" onClick={() => onChange('en')} disabled={disabled || locale === 'en'}>
-        {isJapanese ? t('locale.en') : 'English'}
+        {t('locale.en')}
       </button>
     </div>
   );
