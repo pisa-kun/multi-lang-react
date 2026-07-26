@@ -4,8 +4,7 @@
     "description": "In this sample app, any input will authenticate.",
     "username": "Username",
     "password": "Password",
-    "button": "Sign in",
-    "next": "Next"
+    "button": "Sign in"
   },
   "home": {
     "title": "Home",

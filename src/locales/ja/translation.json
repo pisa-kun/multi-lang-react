@@ -4,8 +4,7 @@
     "description": "このサンプルアプリでは、どんな入力でもログインできます。",
     "username": "ユーザー名",
     "password": "パスワード",
-    "button": "ログイン",
-    "next": "次へ"
+    "button": "ログイン"
   },
   "home": {
     "title": "ホーム",
