@@ -14,8 +14,8 @@ const LocaleSwitcher = ({ locale, onChange, disabled }: Props) => {
       <button type="button" onClick={() => onChange('ja')} disabled={disabled || locale === 'ja'}>
         {t('locale.ja')}
       </button>
-      <button type="button" onClick={() => onChange('us')} disabled={disabled || locale === 'us'}>
-        {t('locale.us')}
+      <button type="button" onClick={() => onChange('en')} disabled={disabled || locale === 'en'}>
+        {t('locale.en')}
       </button>
     </div>
   );

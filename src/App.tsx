@@ -6,6 +6,16 @@ import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import { fetchUserSettings, login, saveUserSettings } from './services/api';
 import LocaleSwitcher from './components/LocaleSwitcher';
+import {
+  buildPathWithLocale,
+  DEFAULT_LOCALE,
+  getLocaleFromPath,
+  getLocaleFromQuery,
+  normalizeLocale,
+  readStoredLocale,
+  stripLocalePrefix,
+  writeStoredLocale,
+} from './utils/locale';
 
 type AuthState = {
   isAuthenticated: boolean;
@@ -13,13 +23,11 @@ type AuthState = {
   preferredLocale: string;
 };
 
-const defaultLocale = 'ja';
-
 function App() {
   const [auth, setAuth] = useState<AuthState>({
     isAuthenticated: false,
     userId: null,
-    preferredLocale: defaultLocale,
+    preferredLocale: DEFAULT_LOCALE,
   });
   const [loadingSettings, setLoadingSettings] = useState(false);
   const [settingsError, setSettingsError] = useState<string | null>(null);
@@ -27,22 +35,38 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const currentLocale = normalizeLocale(
+    getLocaleFromPath(location.pathname) ?? getLocaleFromQuery(location.search) ?? readStoredLocale()
+  );
+
   useEffect(() => {
-    if (!auth.isAuthenticated) {
-      i18n.changeLanguage(auth.preferredLocale);
+    if (auth.preferredLocale !== currentLocale) {
+      setAuth((prev) => ({ ...prev, preferredLocale: currentLocale }));
     }
-  }, [auth.isAuthenticated, auth.preferredLocale, i18n]);
+    if (i18n.language !== currentLocale) {
+      i18n.changeLanguage(currentLocale);
+    }
+    writeStoredLocale(currentLocale);
+  }, [auth.preferredLocale, currentLocale, i18n]);
+
+  useEffect(() => {
+    const localizedPath = buildPathWithLocale(currentLocale, location.pathname);
+    if (location.pathname !== localizedPath) {
+      navigate(`${localizedPath}${location.search}`, { replace: true });
+    }
+  }, [currentLocale, location.pathname, location.search, navigate]);
 
   useEffect(() => {
     if (auth.isAuthenticated) {
       setLoadingSettings(true);
       fetchUserSettings()
         .then((settings) => {
-          setAuth((prev) => ({
-            ...prev,
-            preferredLocale: settings.preferredLocale,
-          }));
-          i18n.changeLanguage(settings.preferredLocale);
+          const nextLocale = normalizeLocale(settings.preferredLocale);
+          setAuth((prev) => ({ ...prev, preferredLocale: nextLocale }));
+          if (i18n.language !== nextLocale) {
+            i18n.changeLanguage(nextLocale);
+          }
+          writeStoredLocale(nextLocale);
         })
         .catch(() => {
           setSettingsError('設定の読み込みに失敗しました。');
@@ -54,8 +78,9 @@ function App() {
   }, [auth.isAuthenticated, i18n]);
 
   const pageTitle = useMemo(() => {
-    if (location.pathname === '/profile') return 'profile.title';
-    if (location.pathname === '/') return auth.isAuthenticated ? 'home.title' : 'login.title';
+    const pathWithoutLocale = stripLocalePrefix(location.pathname);
+    if (pathWithoutLocale === '/profile') return 'profile.title';
+    if (pathWithoutLocale === '/') return auth.isAuthenticated ? 'home.title' : 'login.title';
     return 'home.title';
   }, [auth.isAuthenticated, location.pathname]);
 
@@ -67,8 +92,8 @@ function App() {
     try {
       const result = await login();
       if (result.success) {
-        setAuth({ isAuthenticated: true, userId: result.userId, preferredLocale: auth.preferredLocale });
-        navigate('/');
+        setAuth((prev) => ({ ...prev, isAuthenticated: true, userId: result.userId, preferredLocale: currentLocale }));
+        navigate(buildPathWithLocale(currentLocale, '/'));
       } else {
         setSettingsError('ログインに失敗しました。');
       }
@@ -79,23 +104,30 @@ function App() {
 
   const handleLogout = () => {
     setAuth((prev) => ({ ...prev, isAuthenticated: false, userId: null }));
-    navigate('/login');
+    navigate(buildPathWithLocale(currentLocale, '/login'));
   };
 
   const handleLocaleChange = async (locale: string) => {
+    const nextLocale = normalizeLocale(locale);
+
     if (auth.isAuthenticated) {
       setLoadingSettings(true);
       try {
-        const nextSettings = await saveUserSettings({ preferredLocale: locale });
+        const nextSettings = await saveUserSettings({ preferredLocale: nextLocale });
         setAuth((prev) => ({ ...prev, preferredLocale: nextSettings.preferredLocale }));
         i18n.changeLanguage(nextSettings.preferredLocale);
+        writeStoredLocale(nextLocale);
+        navigate(buildPathWithLocale(nextLocale, location.pathname));
       } catch {
         setSettingsError('設定の保存に失敗しました。');
       } finally {
         setLoadingSettings(false);
       }
     } else {
-      setAuth((prev) => ({ ...prev, preferredLocale: locale }));
+      setAuth((prev) => ({ ...prev, preferredLocale: nextLocale }));
+      i18n.changeLanguage(nextLocale);
+      writeStoredLocale(nextLocale);
+      navigate(buildPathWithLocale(nextLocale, location.pathname));
     }
   };
 
@@ -109,11 +141,15 @@ function App() {
         {settingsError && <div className="error-box">{settingsError}</div>}
         <Routes>
           <Route
-            path="/login"
+            path="/:locale/login"
             element={<LoginPage onLogin={handleLogin} />}
           />
           <Route
-            path="/"
+            path="/:locale/profile"
+            element={<ProfilePage isAuthenticated={auth.isAuthenticated} userId={auth.userId} preferredLocale={auth.preferredLocale} onLogout={handleLogout} />}
+          />
+          <Route
+            path="/:locale"
             element={
               <HomePage
                 isAuthenticated={auth.isAuthenticated}
@@ -124,12 +160,20 @@ function App() {
             }
           />
           <Route
+            path="/login"
+            element={<LoginPage onLogin={handleLogin} />}
+          />
+          <Route
             path="/profile"
+            element={<ProfilePage isAuthenticated={auth.isAuthenticated} userId={auth.userId} preferredLocale={auth.preferredLocale} onLogout={handleLogout} />}
+          />
+          <Route
+            path="/"
             element={
-              <ProfilePage
+              <HomePage
                 isAuthenticated={auth.isAuthenticated}
-                userId={auth.userId}
                 preferredLocale={auth.preferredLocale}
+                loadingSettings={loadingSettings}
                 onLogout={handleLogout}
               />
             }

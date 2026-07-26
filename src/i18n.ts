@@ -1,21 +1,22 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import translationJa from './locales/ja/translation.json';
-import translationUs from './locales/us/translation.json';
+import translationEn from './locales/us/translation.json';
+import { DEFAULT_LOCALE, normalizeLocale, readStoredLocale } from './utils/locale';
 
 const resources = {
   ja: {
     translation: translationJa,
   },
-  us: {
-    translation: translationUs,
+  en: {
+    translation: translationEn,
   },
 };
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'ja',
-  fallbackLng: 'us',
+  lng: normalizeLocale(readStoredLocale()),
+  fallbackLng: DEFAULT_LOCALE,
   interpolation: {
     escapeValue: false,
   },
