@@ -53,12 +53,14 @@ function App() {
       if (nextLocale !== currentLocale) {
         writeStoredLocale(nextLocale);
       }
+      return;
     }
 
-    if (!currentLang && currentLocale !== DEFAULT_LOCALE) {
-      params.set('lang', currentLocale);
-      const nextSearch = params.toString();
-      navigate(`${location.pathname}${nextSearch ? `?${nextSearch}` : ''}`, { replace: true });
+    if (location.search) {
+      const storedLocale = readStoredLocale();
+      if (storedLocale !== currentLocale) {
+        writeStoredLocale(storedLocale);
+      }
     }
   }, [currentLocale, location.pathname, location.search, navigate]);
 
